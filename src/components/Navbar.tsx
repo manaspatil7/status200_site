@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const navLinks = [
-  { name: 'Services', href: '#services' },
-  { name: 'Why Us', href: '#why-us' },
-  { name: 'Process', href: '#process' },
-  { name: 'Pricing', href: '#pricing' },
+  { name: 'Services', href: '/services' },
+  { name: 'Why Us', href: '/why-us' },
+  { name: 'Process', href: '/process' },
+  { name: 'Pricing', href: '/pricing' },
 ];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +22,26 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+    
+    if (href === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.history.pushState({}, '', '/');
+    } else {
+      const sectionId = href.slice(1);
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const offset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        window.history.pushState({}, '', href);
+      }
+    }
+  };
 
   return (
     <motion.nav
@@ -32,15 +54,20 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center glow transition-all duration-300 group-hover:shadow-[0_0_30px_hsl(187_100%_50%/0.5)]">
-              <span className="text-primary-foreground font-bold text-lg">S2</span>
-            </div>
-            <span className="text-xl font-bold text-foreground">Status200</span>
-          </a>
+          <Link 
+            to="/" 
+            onClick={(e) => handleNavClick(e, '/')}
+            className="flex items-center"
+          >
+            <img 
+              src="/logo.png" 
+              alt="Status200 Logo" 
+              className="h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto object-contain"
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
@@ -48,6 +75,7 @@ export default function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium animated-underline"
               >
                 {link.name}
@@ -55,6 +83,16 @@ export default function Navbar() {
             ))}
             <a
               href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.getElementById('contact');
+                if (element) {
+                  const offset = 80;
+                  const elementPosition = element.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - offset;
+                  window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+              }}
               className="btn-glow px-5 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground"
             >
               Start a Project
@@ -86,7 +124,10 @@ export default function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    handleNavClick(e, link.href);
+                    setIsMobileMenuOpen(false);
+                  }}
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-lg font-medium py-2"
                 >
                   {link.name}
@@ -94,7 +135,17 @@ export default function Navbar() {
               ))}
               <a
                 href="#contact"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMobileMenuOpen(false);
+                  const element = document.getElementById('contact');
+                  if (element) {
+                    const offset = 80;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                  }
+                }}
                 className="btn-glow px-5 py-3 rounded-lg text-center font-semibold text-primary-foreground mt-2"
               >
                 Start a Project

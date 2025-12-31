@@ -156,6 +156,16 @@ export default function PricingSection() {
                 {/* CTA */}
                 <a
                   href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById('contact');
+                    if (element) {
+                      const offset = 80;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - offset;
+                      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                  }}
                   className={`block w-full py-3 rounded-xl text-center font-semibold transition-all duration-300 ${
                     plan.highlighted
                       ? 'btn-glow text-primary-foreground'
@@ -188,6 +198,16 @@ export default function PricingSection() {
             <p className="text-muted-foreground mb-4">Ready to get started?</p>
             <a
               href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.getElementById('contact');
+                if (element) {
+                  const offset = 80;
+                  const elementPosition = element.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - offset;
+                  window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+              }}
               className="btn-glow group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold text-primary-foreground"
             >
               Contact us today for a custom quote

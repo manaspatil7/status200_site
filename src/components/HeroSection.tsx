@@ -84,13 +84,34 @@ export default function HeroSection() {
         >
           <a
             href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById('contact');
+              if (element) {
+                const offset = 80;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+              }
+            }}
             className="btn-glow group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold text-primary-foreground"
           >
             Start a Project
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </a>
           <a
-            href="#services"
+            href="/services"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById('services');
+              if (element) {
+                const offset = 80;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                window.history.pushState({}, '', '/services');
+              }
+            }}
             className="glass-card inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-medium text-foreground hover:bg-secondary/50 transition-all duration-300"
           >
             Explore Services

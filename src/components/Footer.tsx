@@ -1,26 +1,26 @@
 import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin, Mail } from 'lucide-react';
+import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
 
 const footerLinks = {
   services: [
-    { name: 'Web Development', href: '#services' },
-    { name: 'App Development', href: '#services' },
-    { name: 'SEO & Performance', href: '#services' },
-    { name: 'AI Automation', href: '#services' },
+    { name: 'Web Development', href: '/services' },
+    { name: 'App Development', href: '/services' },
+    { name: 'SEO & Performance', href: '/services' },
+    { name: 'AI Automation', href: '/services' },
   ],
   company: [
-    { name: 'About', href: '#why-us' },
-    { name: 'Process', href: '#process' },
-    { name: 'Pricing', href: '#pricing' },
+    { name: 'About', href: '/why-us' },
+    { name: 'Process', href: '/process' },
+    { name: 'Pricing', href: '/pricing' },
     { name: 'Contact', href: '#contact' },
   ],
 };
 
 const socialLinks = [
-  { icon: Twitter, href: '#', label: 'Twitter' },
+  { icon: Instagram, href: 'https://www.instagram.com/status_200.dev/', label: 'Instagram' },
   { icon: Linkedin, href: '#', label: 'LinkedIn' },
   { icon: Github, href: '#', label: 'GitHub' },
-  { icon: Mail, href: 'mailto:hello@status200.dev', label: 'Email' },
+  { icon: Mail, href: 'mailto:status200.dev@gmail.com', label: 'Email' },
 ];
 
 export default function Footer() {
@@ -30,11 +30,20 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <a href="#" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">S2</span>
-              </div>
-              <span className="text-xl font-bold text-foreground">Status200</span>
+            <a 
+              href="/" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.history.pushState({}, '', '/');
+              }}
+              className="flex items-center mb-4"
+            >
+              <img 
+                src="/logo.png" 
+                alt="Status200 Logo" 
+                className="h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36 w-auto object-contain"
+              />
             </a>
             <p className="text-muted-foreground max-w-sm mb-6">
               Building exceptional digital products for forward-thinking companies. 
@@ -66,6 +75,19 @@ export default function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
+                    onClick={(e) => {
+                      if (link.href.startsWith('/')) {
+                        e.preventDefault();
+                        const element = document.getElementById('services');
+                        if (element) {
+                          const offset = 80;
+                          const elementPosition = element.getBoundingClientRect().top;
+                          const offsetPosition = elementPosition + window.pageYOffset - offset;
+                          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                          window.history.pushState({}, '', link.href);
+                        }
+                      }
+                    }}
                     className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm"
                   >
                     {link.name}
@@ -85,6 +107,29 @@ export default function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
+                    onClick={(e) => {
+                      if (link.href.startsWith('/')) {
+                        e.preventDefault();
+                        const sectionId = link.href.slice(1);
+                        const element = document.getElementById(sectionId);
+                        if (element) {
+                          const offset = 80;
+                          const elementPosition = element.getBoundingClientRect().top;
+                          const offsetPosition = elementPosition + window.pageYOffset - offset;
+                          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                          window.history.pushState({}, '', link.href);
+                        }
+                      } else if (link.href.startsWith('#')) {
+                        e.preventDefault();
+                        const element = document.getElementById(link.href.slice(1));
+                        if (element) {
+                          const offset = 80;
+                          const elementPosition = element.getBoundingClientRect().top;
+                          const offsetPosition = elementPosition + window.pageYOffset - offset;
+                          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                        }
+                      }
+                    }}
                     className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm"
                   >
                     {link.name}
