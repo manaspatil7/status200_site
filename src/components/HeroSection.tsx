@@ -1,16 +1,11 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { Suspense, lazy } from 'react';
-
-const SplineBackground = lazy(() => import('./SplineBackground'));
+import ParticleBackground from './ParticleBackground';
 
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      {/* Spline 3D Particle Background */}
-      <Suspense fallback={<div className="absolute inset-0 bg-background" />}>
-        <SplineBackground />
-      </Suspense>
+      <ParticleBackground />
       
       {/* Ambient glow effects */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
