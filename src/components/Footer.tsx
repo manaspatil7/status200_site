@@ -18,9 +18,9 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: Instagram, href: 'https://www.instagram.com/status_200.dev/', label: 'Instagram' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
+  { icon: Linkedin, href: 'https://www.linkedin.com/company/110673530', label: 'LinkedIn' },
   { icon: Github, href: '#', label: 'GitHub' },
-  { icon: Mail, href: 'mailto:status200.dev@gmail.com', label: 'Email' },
+  { icon: Mail, href: 'mailto:status200.devs@gmail.com', label: 'Email' },
 ];
 
 export default function Footer() {
@@ -42,7 +42,7 @@ export default function Footer() {
               <img 
                 src="/logo.png" 
                 alt="Status200 Logo" 
-                className="h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36 w-auto object-contain"
+                className="w-56 sm:w-64 md:w-72 lg:w-80 xl:w-96 h-auto"
               />
             </a>
             <p className="text-muted-foreground max-w-sm mb-6">

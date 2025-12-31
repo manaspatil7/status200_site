@@ -1,14 +1,32 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [displayedText, setDisplayedText] = useState('');
+  const fullText = 'Perfect Response. Perfect Results.';
+  
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"]
   });
+
+  // Typewriter effect
+  useEffect(() => {
+    let currentIndex = 0;
+    const timer = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setDisplayedText(fullText.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(timer);
+      }
+    }, 210); // Adjust speed here (lower = faster)
+
+    return () => clearInterval(timer);
+  }, []);
 
   // Transform values based on scroll progress
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.3, 0]);
@@ -57,10 +75,10 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight mb-6"
         >
-          <span className="block text-foreground">Status:</span>
-          <span className="text-gradient-primary">200</span>
+          <span className="block bg-gradient-to-r from-primary to-white bg-clip-text text-transparent">status_200</span>
           <span className="block text-foreground text-3xl md:text-4xl lg:text-5xl mt-4 font-medium">
-            Perfect Response. Perfect Results.
+            {displayedText}
+            <span className="animate-pulse">|</span>
           </span>
         </motion.h1>
 
@@ -71,7 +89,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          We architect exceptional digital experiences—from stunning websites 
+          We architect exceptional digital experiences - from stunning websites 
           to intelligent AI systems. Code that performs. Design that converts.
         </motion.p>
 
@@ -123,16 +141,20 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2"
         >
           <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-muted-foreground uppercase tracking-widest">Scroll</span>
+            <span className="text-xs text-primary uppercase tracking-widest">Scroll</span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="w-5 h-8 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1"
+              className="w-5 h-8 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center pt-2"
             >
-              <div className="w-1 h-2 bg-primary rounded-full" />
+              <motion.div
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="w-1 h-2 rounded-full bg-primary"
+              />
             </motion.div>
           </div>
         </motion.div>
