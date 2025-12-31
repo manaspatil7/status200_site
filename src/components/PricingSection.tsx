@@ -1,49 +1,69 @@
 import { motion } from 'framer-motion';
-import { Check, Star } from 'lucide-react';
+import { Check, Star, ArrowRight, Info } from 'lucide-react';
 import AnimatedSection from './AnimatedSection';
 
 const plans = [
   {
     name: 'Starter',
-    price: '$5,000',
-    description: 'Perfect for MVPs and landing pages',
+    label: 'LAUNCH',
+    price: '₹5K',
+    priceNote: 'Starting',
+    timeline: '1-2 weeks',
+    description: 'Perfect for early-stage startups and MVP validation',
     features: [
-      'Custom landing page',
-      'Mobile responsive',
-      'SEO fundamentals',
-      '2 rounds of revisions',
-      '30-day support',
+      'Custom landing page with responsive design',
+      'Basic on-page SEO optimization',
+      'Contact forms and lead capture',
+      'Google Analytics integration',
+      '30 days post-launch support',
     ],
+    addOns: [
+      'Automation (AI, Emails, WhatsApp)',
+    ],
+    bestFor: 'Startups, MVPs, proof of concept',
     highlighted: false,
   },
   {
     name: 'Growth',
-    price: '$15,000',
-    description: 'Full-featured web applications',
+    label: 'SCALE',
+    price: '₹15K',
+    priceNote: 'Starting',
+    timeline: '4-6 weeks',
+    description: 'For growing businesses needing advanced functionality',
     features: [
-      'Everything in Starter',
-      'Custom web application',
-      'Database & authentication',
-      'Third-party integrations',
-      'Performance optimization',
-      '90-day support',
-      'Priority communication',
+      'Multi-page application (up to 8 pages)',
+      'User authentication & dashboards',
+      'Blog & content management system',
+      '2 months post-launch support',
     ],
+    addOns: [
+      'Advanced SEO + Schema markup',
+      'API integrations (CRM, ERP, payments)',
+      'Automation (AI, Emails, WhatsApp)',
+    ],
+    bestFor: 'Growing SMEs, platform development',
     highlighted: true,
   },
   {
     name: 'Enterprise',
-    price: 'Custom',
-    description: 'Large-scale solutions & AI systems',
+    label: 'DOMINATE',
+    price: '₹35K',
+    priceNote: 'Starting',
+    timeline: '6-8 weeks',
+    description: 'Complex solutions for established market leaders',
     features: [
-      'Everything in Growth',
-      'Custom AI integration',
-      'Scalable architecture',
-      'Dedicated team',
-      'SLA guarantees',
-      '24/7 support',
-      'Ongoing maintenance',
+      'Full-stack custom applications',
+      'E-commerce with advanced features',
+      'Custom API development',
+      'Advanced analytics & reporting',
+      'Load balancing & auto-scaling',
+      '3 months post-launch support',
     ],
+    addOns: [
+      'API integrations (CRM, ERP, payments)',
+      'Automation (AI, Emails, WhatsApp)',
+    ],
+    bestFor: 'Market leaders, complex platforms',
     highlighted: false,
   },
 ];
@@ -55,18 +75,18 @@ export default function PricingSection() {
         {/* Section Header */}
         <AnimatedSection className="text-center mb-20">
           <span className="text-primary text-sm font-semibold uppercase tracking-widest mb-4 block">
-            Investment
+            INVESTMENT TIERS
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            Simple <span className="text-gradient-primary">Pricing</span>
+            Investment Tiers: Flexible Solutions for Every Growth Stage
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Transparent pricing for every stage of growth. No hidden fees, no surprises.
+            Transparent pricing with clear value differentiation. Each tier is strategically designed to meet specific business needs while providing a clear upgrade path as your company grows.
           </p>
         </AnimatedSection>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
           {plans.map((plan, index) => (
             <AnimatedSection key={plan.name} delay={index * 0.15}>
               <motion.div
@@ -78,28 +98,35 @@ export default function PricingSection() {
                     : 'glass-card'
                 }`}
               >
-                {/* Popular Badge */}
+                {/* Most Popular Badge */}
                 {plan.highlighted && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <div className="flex items-center gap-1 px-4 py-1 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs font-bold">
-                      <Star className="w-3 h-3 fill-current" />
-                      Most Popular
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                    <div className="flex items-center gap-1 px-4 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                      MOST POPULAR
                     </div>
                   </div>
                 )}
 
-                {/* Plan Info */}
-                <div className="text-center mb-8">
-                  <h3 className="text-xl font-bold text-foreground mb-2">{plan.name}</h3>
-                  <div className="flex items-baseline justify-center gap-1 mb-2">
-                    <span className="text-4xl font-bold text-gradient-primary">{plan.price}</span>
-                    {plan.price !== 'Custom' && <span className="text-muted-foreground text-sm">+</span>}
+                {/* Plan Label */}
+                <div className="absolute top-4 right-4">
+                  <div className="px-3 py-1 rounded bg-primary text-primary-foreground text-xs font-bold">
+                    {plan.label}
                   </div>
-                  <p className="text-sm text-muted-foreground">{plan.description}</p>
+                </div>
+
+                {/* Plan Info */}
+                <div className="text-center mb-8 mt-4">
+                  <h3 className="text-xl font-bold text-foreground mb-2">{plan.name}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
+                  <div className="flex items-baseline justify-center gap-1 mb-2">
+                    <span className="text-4xl font-bold text-primary">{plan.price}</span>
+                    <span className="text-muted-foreground text-sm ml-1">{plan.priceNote}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Timeline: {plan.timeline}</p>
                 </div>
 
                 {/* Features */}
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-6">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -107,6 +134,24 @@ export default function PricingSection() {
                     </li>
                   ))}
                 </ul>
+
+                {/* Add-ons */}
+                <div className="mb-6">
+                  <p className="text-sm font-semibold text-foreground mb-3">Add-ons: (Chargeable)</p>
+                  <ul className="space-y-2">
+                    {plan.addOns.map((addOn) => (
+                      <li key={addOn} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-muted-foreground">{addOn}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Best For */}
+                <p className="text-sm text-muted-foreground mb-6">
+                  <span className="font-semibold text-foreground">Best for:</span> {plan.bestFor}
+                </p>
 
                 {/* CTA */}
                 <a
@@ -122,6 +167,33 @@ export default function PricingSection() {
               </motion.div>
             </AnimatedSection>
           ))}
+        </div>
+
+        {/* Additional Information and CTA */}
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-end">
+          {/* Payment Terms */}
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-muted-foreground">Payment terms: 50% start, 50% launch</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-muted-foreground">Hosting, domain & third-party tools billed separately</p>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-right">
+            <p className="text-muted-foreground mb-4">Ready to get started?</p>
+            <a
+              href="#contact"
+              className="btn-glow group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold text-primary-foreground"
+            >
+              Contact us today for a custom quote
+              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
+          </div>
         </div>
       </div>
 

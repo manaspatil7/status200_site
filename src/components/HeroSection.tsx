@@ -1,18 +1,40 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
 
 export default function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Transform values based on scroll progress
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.3, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.95, 0.8]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const blur = useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 10]);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       <ParticleBackground />
       
       {/* Ambient glow effects */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-pulse delay-1000" />
+      <motion.div 
+        style={{ opacity }}
+        className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" 
+      />
+      <motion.div 
+        style={{ opacity }}
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-pulse delay-1000" 
+      />
       
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 text-center">
+      <motion.div 
+        style={{ opacity, scale, y, filter: `blur(${blur}px)` }}
+        className="relative z-10 max-w-7xl mx-auto px-6 py-20 text-center"
+      >
         {/* Status Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -93,7 +115,7 @@ export default function HeroSection() {
             </motion.div>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
