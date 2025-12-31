@@ -74,12 +74,19 @@ export default function ServicesSection() {
     offset: ['start start', 'end start'],
   })
 
-  // smoother + slower
   const x = useTransform(
-    scrollYProgress,
-    [0.1, 0.9],      // ⬅ spreads motion across more scroll
-    ['0%', '-220%']
-  )
+  scrollYProgress,
+  [0.1, 0.9],
+  ['calc(50vw - 210px)', '-220%']
+)
+
+
+  // // smoother + slower
+  // const x = useTransform(
+  //   scrollYProgress,
+  //   [0.1, 0.9],      // ⬅ spreads motion across more scroll
+  //   ['0%', '-220%']
+  // )
   
 
   return (
