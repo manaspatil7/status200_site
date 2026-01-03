@@ -26,7 +26,7 @@ export default function CTASection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <motion.a
-              href="mailto:status200.dev@gmail.com"
+              href="mailto:status200.devs@gmail.com"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               className="btn-glow group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-lg font-semibold text-primary-foreground"

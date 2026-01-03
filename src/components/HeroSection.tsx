@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Zap } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
 
 export default function HeroSection() {
@@ -60,12 +60,12 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.2, type: "spring" }}
           className="inline-flex items-center gap-3 glass-card px-5 py-2.5 rounded-full mb-8 border border-primary/20"
         >
+          <Zap className="w-4 h-4 text-primary" />
+          <span className="text-sm font-medium text-foreground/80 tracking-wide">Delivering Digital Excellence</span>
           <span className="relative flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
           </span>
-          <span className="text-sm font-medium text-foreground/80 tracking-wide">Building the future of digital</span>
-          <Sparkles className="w-4 h-4 text-primary" />
         </motion.div>
 
         {/* Main Headline */}
@@ -75,7 +75,13 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight mb-6"
         >
-          <span className="block bg-gradient-to-r from-primary to-white bg-clip-text text-transparent">status_200</span>
+          <motion.span 
+            className="block bg-gradient-to-r from-primary via-cyan-300 to-white bg-[length:200%_auto] bg-clip-text text-transparent"
+            animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          >
+            status_200
+          </motion.span>
           <span className="block text-foreground text-3xl md:text-4xl lg:text-5xl mt-4 font-medium">
             {displayedText}
             <span className="animate-pulse">|</span>
@@ -87,7 +93,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-lg md:text-xl text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed font-book tracking-wide"
         >
           We architect exceptional digital experiences - from stunning websites 
           to intelligent AI systems. Code that performs. Design that converts.
@@ -112,10 +118,14 @@ export default function HeroSection() {
                 window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
               }
             }}
-            className="btn-glow group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold text-primary-foreground"
+            className="relative group"
           >
-            Start a Project
-            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            <div className="relative rounded-xl overflow-hidden p-[1px] bg-gradient-to-r from-cyan-400/0 via-violet-500/0 to-pink-500/0 group-hover:from-cyan-400 group-hover:via-violet-500 group-hover:to-pink-500 transition-all duration-500">
+              <div className="btn-glow group/inner inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold text-primary-foreground">
+                Start a Project
+                <ArrowRight className="w-5 h-5 transition-transform duration-300 group-inner/hover:translate-x-1" />
+              </div>
+            </div>
           </a>
           <a
             href="/services"
@@ -130,9 +140,13 @@ export default function HeroSection() {
                 window.history.pushState({}, '', '/services');
               }
             }}
-            className="glass-card inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-medium text-foreground hover:bg-secondary/50 transition-all duration-300"
+            className="relative group"
           >
-            Explore Services
+            <div className="relative rounded-xl overflow-hidden p-[1px] bg-gradient-to-r from-blue-400/0 via-cyan-500/0 to-blue-600/0 group-hover:from-blue-400 group-hover:via-cyan-500 group-hover:to-blue-600 transition-all duration-500">
+              <div className="glass-card inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-medium text-foreground hover:bg-secondary/50 transition-all duration-300">
+                Explore Services
+              </div>
+            </div>
           </a>
         </motion.div>
 

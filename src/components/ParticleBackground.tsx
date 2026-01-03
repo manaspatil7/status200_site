@@ -2,13 +2,31 @@ import { useRef, useMemo, Suspense, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
+// Hook to detect mobile
+function useIsMobileView() {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  return isMobile;
+}
+
 // Main particle sphere that reacts to mouse movement - Spline-style
 function ParticleSphere() {
   const pointsRef = useRef<THREE.Points>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
   const targetMouseRef = useRef({ x: 0, y: 0 });
   
-  const particleCount = 8000;
+  const isMobile = useIsMobileView();
+  // Reduce particle count on mobile by 75%
+  const particleCount = isMobile ? 3000 : 10000;
   
   const { positions, originalPositions, colors, sizes } = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
@@ -34,26 +52,13 @@ function ParticleSphere() {
       originalPositions[i * 3 + 1] = y;
       originalPositions[i * 3 + 2] = z;
       
-      // Gradient colors from cyan to purple to pink
-      const t = Math.random();
-      if (t < 0.33) {
-        // Cyan
-        colors[i * 3] = 0.2 + Math.random() * 0.3;
-        colors[i * 3 + 1] = 0.8 + Math.random() * 0.2;
-        colors[i * 3 + 2] = 1;
-      } else if (t < 0.66) {
-        // Purple
-        colors[i * 3] = 0.5 + Math.random() * 0.3;
-        colors[i * 3 + 1] = 0.2 + Math.random() * 0.2;
-        colors[i * 3 + 2] = 0.9 + Math.random() * 0.1;
-      } else {
-        // Pink/Magenta
-        colors[i * 3] = 0.9 + Math.random() * 0.1;
-        colors[i * 3 + 1] = 0.2 + Math.random() * 0.3;
-        colors[i * 3 + 2] = 0.6 + Math.random() * 0.4;
-      }
+      // White color with slight variations
+      const brightness = 0.7 + Math.random() * 0.3;
+      colors[i * 3] = brightness;
+      colors[i * 3 + 1] = brightness;
+      colors[i * 3 + 2] = brightness;
       
-      sizes[i] = 0.02 + Math.random() * 0.03;
+      sizes[i] = 0.04 + Math.random() * 0.06;
     }
     
     return { positions, originalPositions, colors, sizes };
@@ -67,9 +72,12 @@ function ParticleSphere() {
       };
     };
     
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    // Only listen to mouse on desktop
+    if (!isMobile) {
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [isMobile]);
 
   useFrame((state) => {
     if (!pointsRef.current) return;
@@ -85,14 +93,17 @@ function ParticleSphere() {
     // Rotate the entire sphere slowly
     pointsRef.current.rotation.y = time * 0.05;
     
-    // Animate individual particles with repulsion
+    // Animate individual particles with repulsion and glow
     const positionArray = pointsRef.current.geometry.attributes.position.array as Float32Array;
+    const colorArray = pointsRef.current.geometry.attributes.color.array as Float32Array;
+    const sizeArray = pointsRef.current.geometry.attributes.size.array as Float32Array;
     
     // Convert mouse to 3D space (approximate)
     const mouseX = mouse.x * 4;
     const mouseY = mouse.y * 4;
     const repulsionRadius = 2.5; // Radius of effect
     const repulsionStrength = 1.5; // How strongly particles are pushed
+    const glowRadius = 3.5; // Glow effect radius
     
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
@@ -135,9 +146,25 @@ function ParticleSphere() {
       positionArray[i3] += (targetX - positionArray[i3]) * 0.1;
       positionArray[i3 + 1] += (targetY - positionArray[i3 + 1]) * 0.1;
       positionArray[i3 + 2] += (targetZ - positionArray[i3 + 2]) * 0.1;
+      
+      // Glow effect on hover - brighten particles near cursor
+      if (distToMouse < glowRadius && distToMouse > 0.01) {
+        const glowIntensity = (1 - distToMouse / glowRadius) * 0.6;
+        const baseColor = 0.7 + Math.random() * 0.3;
+        const glowColor = Math.min(1, baseColor + glowIntensity);
+        
+        colorArray[i3] = glowColor;
+        colorArray[i3 + 1] = glowColor;
+        colorArray[i3 + 2] = glowColor;
+        
+        // Slightly increase size for glow particles
+        sizeArray[i] += glowIntensity * 0.02;
+      }
     }
     
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
+    pointsRef.current.geometry.attributes.color.needsUpdate = true;
+    pointsRef.current.geometry.attributes.size.needsUpdate = true;
   });
 
   return (
@@ -163,10 +190,10 @@ function ParticleSphere() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.025}
+        size={0.05}
         vertexColors
         transparent
-        opacity={0.9}
+        opacity={0.5}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -309,13 +336,15 @@ function AmbientParticles() {
 }
 
 export default function ParticleBackground() {
+  const isMobile = useIsMobileView();
+  
   return (
     <div className="absolute inset-0 z-0">
       <Canvas
-        camera={{ position: [0, 0, 8], fov: 60 }}
-        dpr={[1, 2]}
+        camera={{ position: [0, 0, isMobile ? 12 : 8], fov: isMobile ? 50 : 60 }}
+        dpr={isMobile ? 1 : [1, 2]}
         gl={{ 
-          antialias: true, 
+          antialias: !isMobile,
           alpha: true,
           powerPreference: "high-performance"
         }}
@@ -323,18 +352,22 @@ export default function ParticleBackground() {
       >
         <Suspense fallback={null}>
           <color attach="background" args={['#030712']} />
-          <fog attach="fog" args={['#030712', 8, 25]} />
+          <fog attach="fog" args={['#030712', isMobile ? 15 : 8, isMobile ? 35 : 25]} />
           
-          <ambientLight intensity={0.2} />
-          <pointLight position={[10, 10, 10]} intensity={0.5} color="#0ea5e9" />
-          <pointLight position={[-10, -10, -10]} intensity={0.3} color="#8b5cf6" />
+          <ambientLight intensity={isMobile ? 0.3 : 0.2} />
+          <pointLight position={[10, 10, 10]} intensity={isMobile ? 0.3 : 0.5} color="#0ea5e9" />
+          <pointLight position={[-10, -10, -10]} intensity={isMobile ? 0.15 : 0.3} color="#8b5cf6" />
           
           <ParticleSphere />
           <GlowingCore />
-          <OrbitRing radius={4.5} speed={0.15} color="#0ea5e9" />
-          <OrbitRing radius={5} speed={-0.1} color="#8b5cf6" />
-          <OrbitRing radius={5.5} speed={0.08} color="#ec4899" />
-          <AmbientParticles />
+          {!isMobile && (
+            <>
+              <OrbitRing radius={4.5} speed={0.15} color="#0ea5e9" />
+              <OrbitRing radius={5} speed={-0.1} color="#8b5cf6" />
+              <OrbitRing radius={5.5} speed={0.08} color="#ec4899" />
+            </>
+          )}
+      <AmbientParticles />
         </Suspense>
       </Canvas>
       

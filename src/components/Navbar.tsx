@@ -81,22 +81,26 @@ export default function Navbar() {
 								{link.name}
 							</a>
 						))}
-						<a
-							href="#contact"
-							onClick={(e) => {
-								e.preventDefault();
-								const element = document.getElementById('contact');
-								if (element) {
-									const offset = 80;
-									const elementPosition = element.getBoundingClientRect().top;
-									const offsetPosition = elementPosition + window.pageYOffset - offset;
-									window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-								}
-							}}
-							className="btn-glow px-5 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground"
-						>
-							Start a Project
-						</a>
+						<div className="relative group">
+							<div className="relative rounded-lg overflow-hidden p-[1px] bg-gradient-to-r from-cyan-400/0 via-violet-500/0 to-pink-500/0 group-hover:from-cyan-400 group-hover:via-violet-500 group-hover:to-pink-500 transition-all duration-500">
+								<a
+									href="#contact"
+									onClick={(e) => {
+										e.preventDefault();
+										const element = document.getElementById('contact');
+										if (element) {
+											const offset = 80;
+											const elementPosition = element.getBoundingClientRect().top;
+											const offsetPosition = elementPosition + window.pageYOffset - offset;
+											window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+										}
+									}}
+									className="btn-glow px-5 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground block"
+								>
+									Start a Project
+								</a>
+							</div>
+						</div>
 					</div>
 
 					{/* Mobile Menu Button */}
@@ -133,23 +137,27 @@ export default function Navbar() {
 									{link.name}
 								</a>
 							))}
-							<a
-								href="#contact"
-								onClick={(e) => {
-									e.preventDefault();
-									setIsMobileMenuOpen(false);
-									const element = document.getElementById('contact');
-									if (element) {
-										const offset = 80;
-										const elementPosition = element.getBoundingClientRect().top;
-										const offsetPosition = elementPosition + window.pageYOffset - offset;
-										window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-									}
-								}}
-								className="btn-glow px-5 py-3 rounded-lg text-center font-semibold text-primary-foreground mt-4"
-							>
-								Start a Project
-							</a>
+							<div className="relative group">
+								<div className="relative rounded-lg overflow-hidden p-[1px] bg-gradient-to-r from-cyan-400/0 via-violet-500/0 to-pink-500/0 group-hover:from-cyan-400 group-hover:via-violet-500 group-hover:to-pink-500 transition-all duration-500 mt-4">
+									<a
+										href="#contact"
+										onClick={(e) => {
+											e.preventDefault();
+											setIsMobileMenuOpen(false);
+											const element = document.getElementById('contact');
+											if (element) {
+												const offset = 80;
+												const elementPosition = element.getBoundingClientRect().top;
+												const offsetPosition = elementPosition + window.pageYOffset - offset;
+												window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+											}
+										}}
+										className="btn-glow px-5 py-3 rounded-lg text-center font-semibold text-primary-foreground block"
+									>
+										Start a Project
+									</a>
+								</div>
+							</div>
 						</div>
 					</motion.div>
 				)}

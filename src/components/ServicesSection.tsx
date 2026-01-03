@@ -15,38 +15,39 @@ import ParticleBackground from './ParticleBackground'
 const services = [
   {
     number: '01',
-    title: 'Web Development',
-    subtitle: 'Performance-first',
+    title: 'Web & App Development',
+    subtitle: 'Custom Solutions Built to Scale',
     description:
-      'Modern websites and SaaS platforms built with clean architecture, speed, and SEO in mind.',
+      'From MVP landing pages to enterprise-grade full-stack applications. We build responsive web applications and native mobile apps with React, Node.js, and modern cloud infrastructure. Includes multi-page web apps, e-commerce solutions, and custom API integrations.',
     icon: Code2,
-    tags: ['React', 'Next.js', 'SEO Optimized'],
+    tags: ['React', 'Node.js', 'Full-Stack', 'E-Commerce', 'API Integration'],
   },
   {
     number: '02',
-    title: 'App Development',
-    subtitle: 'iOS & Android',
+    title: 'SEO-First Architecture',
+    subtitle: '75% Faster Load Times',
     description:
-      'Native and cross-platform mobile apps delivering seamless user experiences and native performance.',
-    icon: Smartphone,
-    tags: ['Cross-Platform', 'Native Performance'],
+      'Search-first architecture with Core Web Vitals excellence. We implement advanced SEO optimization, schema markup, and performance benchmarking to achieve sub-second load times and dominate search rankings.',
+    icon: TrendingUp,
+    tags: ['Core Web Vitals', 'Schema Markup', 'LCP < 2.5s', 'Conversion Focused'],
   },
   {
     number: '03',
-    title: 'SEO & Performance',
-    subtitle: 'LCP < 2.5s',
+    title: 'User Authentication & Dashboards',
+    subtitle: 'Secure & Scalable Systems',
     description:
-      'Search-first architecture with Core Web Vitals excellence. Built to dominate rankings and performance.',
-    icon: TrendingUp,
+      'Build authenticated user systems with custom dashboards, role-based access control, and real-time analytics. Perfect for SaaS platforms and member-based applications with 99.9% uptime guarantee.',
+    icon: Smartphone,
+    tags: ['Authentication', 'Dashboards', '99.9% Uptime', 'Real-time Analytics'],
   },
   {
     number: '04',
-    title: 'AI Automation',
-    subtitle: '24/7 Intelligent Systems',
+    title: 'AI Automation & Integrations',
+    subtitle: 'Intelligent Business Systems',
     description:
-      'Custom AI models, agents, and workflow automation designed to scale modern businesses.',
+      'Custom AI-powered automation, chatbots, and workflow integrations. Connect your favorite tools - CRM, ERP, payment gateways, and more. Email automation, WhatsApp integration, and intelligent process automation.',
     icon: Bot,
-    tags: ['AI Models', 'Chatbots', 'Automation'],
+    tags: ['AI Models', 'Chatbots', 'CRM Integration', 'Email Automation', 'WhatsApp'],
   },
 ]
 
@@ -79,7 +80,7 @@ function DesktopServicesSection() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 30%', 'end start'],
+    offset: ['start 1%', 'end start'],
   })
 
   // Smoother animation - starts earlier when section enters viewport
@@ -93,7 +94,7 @@ function DesktopServicesSection() {
     <section
       ref={sectionRef}
       id="services"
-      className="relative h-[250vh]"
+      className="relative h-[110vh]"
     >
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         <ParticleBackground />
@@ -230,8 +231,8 @@ function ServiceCard({ service, isDesktop }: { service: any; isDesktop: boolean 
       }`}>
       <div className="relative rounded-2xl overflow-hidden p-[1px] bg-gradient-to-r from-cyan-400/0 via-violet-500/0 to-pink-500/0 group-hover:from-cyan-400 group-hover:via-violet-500 group-hover:to-pink-500 transition-all duration-500">
         <div className={`relative rounded-2xl bg-black/90 backdrop-blur-xl border border-gray-800 flex flex-col ${isDesktop
-          ? 'p-8 min-h-[500px]'
-          : 'p-5 sm:p-6'
+          ? 'p-8 h-[600px]'
+          : 'p-5 h-[500px] sm:p-6'
           }`}>
 
           {/* Number */}
@@ -282,7 +283,7 @@ function ServiceCard({ service, isDesktop }: { service: any; isDesktop: boolean 
 
           {/* Tags */}
           {service.tags && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 pt-5">
               {service.tags.map((tag: string) => (
                 <span
                   key={tag}
