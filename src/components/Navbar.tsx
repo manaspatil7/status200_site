@@ -47,10 +47,13 @@ export default function Navbar() {
 			initial={{ y: -100 }}
 			animate={{ y: 0 }}
 			transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-			className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+			className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+				? 'bg-black/80 backdrop-blur-lg border-b border-white/10 shadow-lg'
+				: 'bg-transparent'
+				}`}
 		>
 			<div className="max-w-7xl mx-auto px-6">
-				<div className="flex items-center justify-between h-14 sm:h-16 pt-4">
+				<div className="flex items-center justify-between h-16 sm:h-20 py-3">
 					{/* Logo */}
 					<Link
 						to="/"

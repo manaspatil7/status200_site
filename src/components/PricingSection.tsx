@@ -86,17 +86,16 @@ export default function PricingSection() {
         </AnimatedSection>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
           {plans.map((plan, index) => (
             <AnimatedSection key={plan.name} delay={index * 0.15}>
               <motion.div
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
-                className={`relative h-full rounded-2xl p-8 ${
-                  plan.highlighted
+                className={`relative h-full rounded-2xl p-8 ${plan.highlighted
                     ? 'bg-gradient-to-b from-primary/20 to-accent/10 border-2 border-primary/50'
                     : 'glass-card'
-                }`}
+                  }`}
               >
                 {/* Most Popular Badge */}
                 {plan.highlighted && (
@@ -166,11 +165,10 @@ export default function PricingSection() {
                       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                     }
                   }}
-                  className={`block w-full py-3 rounded-xl text-center font-semibold transition-all duration-300 ${
-                    plan.highlighted
+                  className={`block w-full py-3 rounded-xl text-center font-semibold transition-all duration-300 ${plan.highlighted
                       ? 'btn-glow text-primary-foreground'
                       : 'bg-secondary hover:bg-secondary/80 text-foreground'
-                  }`}
+                    }`}
                 >
                   Get Started
                 </a>
