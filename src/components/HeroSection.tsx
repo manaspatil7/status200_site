@@ -1,17 +1,30 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, lazy, Suspense, memo } from 'react';
 import { ArrowRight, Zap } from 'lucide-react';
-import ParticleBackground from './ParticleBackground';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+
+// Lazy load ParticleBackground only on desktop
+const ParticleBackground = lazy(() => import('./ParticleBackground'));
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [displayedText, setDisplayedText] = useState('');
+  const [isDesktop, setIsDesktop] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
   const fullText = 'Perfect Response. Perfect Results.';
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"]
   });
+
+  // Check if desktop
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
 
   // Typewriter effect
   useEffect(() => {
@@ -23,7 +36,7 @@ export default function HeroSection() {
       } else {
         clearInterval(timer);
       }
-    }, 210); // Adjust speed here (lower = faster)
+    }, 210);
 
     return () => clearInterval(timer);
   }, []);
@@ -32,21 +45,30 @@ export default function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.3, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.95, 0.8]);
   const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const blur = useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 10]);
+  // Disable blur on mobile for performance
+  const blur = isDesktop ? useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 10]) : useTransform(scrollYProgress, [0, 1], [0, 0]);
 
   return (
     <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      <ParticleBackground />
+      {isDesktop && (
+        <Suspense fallback={null}>
+          <ParticleBackground />
+        </Suspense>
+      )}
       
-      {/* Ambient glow effects */}
-      <motion.div 
-        style={{ opacity }}
-        className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" 
-      />
-      <motion.div 
-        style={{ opacity }}
-        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-pulse delay-1000" 
-      />
+      {/* Ambient glow effects - desktop only */}
+      {isDesktop && (
+        <>
+          <motion.div 
+            style={{ opacity }}
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" 
+          />
+          <motion.div 
+            style={{ opacity }}
+            className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-pulse delay-1000" 
+          />
+        </>
+      )}
       
       {/* Content */}
       <motion.div 
@@ -55,9 +77,9 @@ export default function HeroSection() {
       >
         {/* Status Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2, type: "spring" }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.9 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+          transition={shouldReduceMotion ? { duration: 0.2 } : { duration: 0.6, delay: 0.2, type: "spring" }}
           className="inline-flex items-center gap-3 glass-card px-5 py-2.5 rounded-full mb-8 border border-primary/20"
         >
           <Zap className="w-4 h-4 text-primary" />
@@ -70,15 +92,15 @@ export default function HeroSection() {
 
         {/* Main Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          transition={shouldReduceMotion ? { duration: 0.2, delay: 0.1 } : { duration: 0.8, delay: 0.4 }}
           className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight mb-6"
         >
           <motion.span 
             className="block bg-gradient-to-r from-primary via-cyan-300 to-white bg-[length:200%_auto] bg-clip-text text-transparent"
-            animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            animate={shouldReduceMotion ? {} : { backgroundPosition: ['0%', '100%', '0%'] }}
+            transition={shouldReduceMotion ? {} : { duration: 3, repeat: Infinity, ease: "linear" }}
           >
             status_200
           </motion.span>
@@ -90,9 +112,9 @@ export default function HeroSection() {
 
         {/* Subheadline */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          transition={shouldReduceMotion ? { duration: 0.2, delay: 0.15 } : { duration: 0.8, delay: 0.6 }}
           className="text-lg md:text-xl text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed font-book tracking-wide"
         >
           We architect exceptional digital experiences - from stunning websites 
@@ -101,9 +123,9 @@ export default function HeroSection() {
 
         {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          transition={shouldReduceMotion ? { duration: 0.2, delay: 0.2 } : { duration: 0.8, delay: 0.8 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <a
@@ -154,19 +176,19 @@ export default function HeroSection() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.2 }}
+          transition={shouldReduceMotion ? { duration: 0.2, delay: 0.3 } : { duration: 1, delay: 1.2 }}
           className="absolute bottom-0 left-1/2 -translate-x-1/2"
         >
           <div className="flex flex-col items-center gap-2">
             <span className="text-xs text-primary uppercase tracking-widest">Scroll</span>
             <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              animate={shouldReduceMotion ? {} : { y: [0, 8, 0] }}
+              transition={shouldReduceMotion ? {} : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               className="w-5 h-8 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center pt-2"
             >
               <motion.div
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+                animate={shouldReduceMotion ? {} : { opacity: [1, 0] }}
+                transition={shouldReduceMotion ? {} : { duration: 1.5, repeat: Infinity }}
                 className="w-1 h-2 rounded-full bg-primary"
               />
             </motion.div>

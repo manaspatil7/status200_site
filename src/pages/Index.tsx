@@ -1,13 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import SmoothScroll from '@/components/SmoothScroll';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
-import WhyUsSection from '@/components/WhyUsSection';
-import ProcessSection from '@/components/ProcessSection';
-import PricingSection from '@/components/PricingSection';
-import CTASection from '@/components/CTASection';
-import Footer from '@/components/Footer';
+
+// Lazy load non-critical sections
+const WhyUsSection = lazy(() => import('@/components/WhyUsSection'));
+const ProcessSection = lazy(() => import('@/components/ProcessSection'));
+const PricingSection = lazy(() => import('@/components/PricingSection'));
+const CTASection = lazy(() => import('@/components/CTASection'));
+const Footer = lazy(() => import('@/components/Footer'));
+
+// Loading placeholder for sections
+const SectionLoader = () => (
+  <div className="min-h-screen bg-background animate-pulse" />
+);
 
 const Index = () => {
   useEffect(() => {
@@ -22,12 +29,22 @@ const Index = () => {
         <main>
           <HeroSection />
           <ServicesSection />
-          <WhyUsSection />
-          <ProcessSection />
-          <PricingSection />
-          <CTASection />
+          <Suspense fallback={<SectionLoader />}>
+            <WhyUsSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <ProcessSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <PricingSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <CTASection />
+          </Suspense>
         </main>
-        <Footer />
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </div>
     </SmoothScroll>
   );

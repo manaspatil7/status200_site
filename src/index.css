@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* Fonts loaded asynchronously via HTML head for better LCP */
 
 @tailwind base;
 @tailwind components;
@@ -85,20 +85,26 @@
 }
 
 @layer components {
-  /* Glassmorphism Card */
+  /* Glassmorphism Card - Simplified for mobile */
   .glass-card {
     @apply relative overflow-hidden rounded-2xl;
     background: hsl(var(--surface-glass) / 0.6);
-    backdrop-filter: blur(20px);
     border: 1px solid hsl(var(--border) / 0.5);
   }
 
-  .glass-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.05) 0%, transparent 50%);
-    pointer-events: none;
+  /* Only apply expensive blur on larger screens */
+  @media (min-width: 768px) {
+    .glass-card {
+      backdrop-filter: blur(20px);
+    }
+    
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, hsl(var(--primary) / 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
   }
 
   /* Glow Effect */

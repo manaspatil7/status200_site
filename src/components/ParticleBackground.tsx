@@ -25,8 +25,8 @@ function ParticleSphere() {
   const targetMouseRef = useRef({ x: 0, y: 0 });
   
   const isMobile = useIsMobileView();
-  // Reduce particle count on mobile by 75%
-  const particleCount = isMobile ? 3000 : 10000;
+  // Reduce particle count on mobile by 92% for better performance
+  const particleCount = isMobile ? 800 : 10000;
   
   const { positions, originalPositions, colors, sizes } = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
@@ -84,7 +84,13 @@ function ParticleSphere() {
     
     const time = state.clock.getElapsedTime();
     
-    // Smooth mouse following
+    // On mobile, only do basic rotation - skip everything else
+    if (isMobile) {
+      pointsRef.current.rotation.y = time * 0.03;
+      return;
+    }
+    
+    // Desktop: Smooth mouse following
     mouseRef.current.x += (targetMouseRef.current.x - mouseRef.current.x) * 0.08;
     mouseRef.current.y += (targetMouseRef.current.y - mouseRef.current.y) * 0.08;
     
@@ -93,7 +99,7 @@ function ParticleSphere() {
     // Rotate the entire sphere slowly
     pointsRef.current.rotation.y = time * 0.05;
     
-    // Animate individual particles with repulsion and glow
+    // Desktop: Animate individual particles with repulsion and glow
     const positionArray = pointsRef.current.geometry.attributes.position.array as Float32Array;
     const colorArray = pointsRef.current.geometry.attributes.color.array as Float32Array;
     const sizeArray = pointsRef.current.geometry.attributes.size.array as Float32Array;
@@ -279,7 +285,9 @@ function OrbitRing({ radius, speed, color }: { radius: number; speed: number; co
 // Floating ambient particles
 function AmbientParticles() {
   const pointsRef = useRef<THREE.Points>(null);
-  const particleCount = 500;
+  const isMobile = useIsMobileView();
+  // Disable ambient particles on mobile for better performance
+  const particleCount = isMobile ? 0 : 300;
   
   const { positions, speeds } = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
@@ -341,25 +349,32 @@ export default function ParticleBackground() {
   return (
     <div className="absolute inset-0 z-0">
       <Canvas
-        camera={{ position: [0, 0, isMobile ? 12 : 8], fov: isMobile ? 50 : 60 }}
-        dpr={isMobile ? 1 : [1, 2]}
+        camera={{ position: [0, 0, isMobile ? 14 : 8], fov: isMobile ? 45 : 60 }}
+        dpr={isMobile ? 0.75 : [1, 2]}
         gl={{ 
-          antialias: !isMobile,
+          antialias: false,
           alpha: true,
-          powerPreference: "high-performance"
+          powerPreference: isMobile ? "low-power" : "high-performance",
+          stencil: false,
+          depth: !isMobile
         }}
+        frameloop={isMobile ? "demand" : "always"}
         style={{ background: 'transparent' }}
       >
         <Suspense fallback={null}>
           <color attach="background" args={['#030712']} />
           <fog attach="fog" args={['#030712', isMobile ? 15 : 8, isMobile ? 35 : 25]} />
           
-          <ambientLight intensity={isMobile ? 0.3 : 0.2} />
-          <pointLight position={[10, 10, 10]} intensity={isMobile ? 0.3 : 0.5} color="#0ea5e9" />
-          <pointLight position={[-10, -10, -10]} intensity={isMobile ? 0.15 : 0.3} color="#8b5cf6" />
+          <ambientLight intensity={isMobile ? 0.4 : 0.2} />
+          {!isMobile && (
+            <>
+              <pointLight position={[10, 10, 10]} intensity={0.5} color="#0ea5e9" />
+              <pointLight position={[-10, -10, -10]} intensity={0.3} color="#8b5cf6" />
+            </>
+          )}
           
           <ParticleSphere />
-          <GlowingCore />
+          {!isMobile && <GlowingCore />}
           {!isMobile && (
             <>
               <OrbitRing radius={4.5} speed={0.15} color="#0ea5e9" />
@@ -367,7 +382,7 @@ export default function ParticleBackground() {
               <OrbitRing radius={5.5} speed={0.08} color="#ec4899" />
             </>
           )}
-      <AmbientParticles />
+          {!isMobile && <AmbientParticles />}
         </Suspense>
       </Canvas>
       

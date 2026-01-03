@@ -1,5 +1,5 @@
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, memo } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   TrendingUp,
@@ -11,6 +11,7 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import ParticleBackground from './ParticleBackground'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 const services = [
   {
