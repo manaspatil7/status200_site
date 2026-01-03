@@ -35,10 +35,11 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          'three': ['three', '@react-three/fiber'],
-          'framer': ['framer-motion'],
-          'vendor': ['react', 'react-dom', 'react-router-dom'],
-          'icons': ['lucide-react'],
+          three: ['three', '@react-three/fiber'],
+          framer: ['framer-motion'],
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
         },
       },
       plugins: mode === 'production' ? [

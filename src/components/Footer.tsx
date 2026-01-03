@@ -41,7 +41,11 @@ export default function Footer() {
             >
               <img 
                 src="/logo.png" 
-                alt="Status200 Logo" 
+                alt="Status200 Logo"
+                width="384"
+                height="100"
+                loading="lazy"
+                decoding="async"
                 className="w-56 sm:w-64 md:w-72 lg:w-80 xl:w-96 h-auto"
               />
             </a>

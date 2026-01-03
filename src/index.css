@@ -278,6 +278,66 @@
   /* Modern glow text */
   .glow-text {
     text-shadow: 0 0 20px hsl(var(--primary) / 0.5), 0 0 40px hsl(var(--primary) / 0.3);
+
+    /* CRITICAL: Hero LCP optimizations - instant render, no animation delay */
+    .hero-headline {
+      animation: heroFadeIn 0.3s ease-out forwards;
+    }
+
+    .hero-badge {
+      animation: heroFadeIn 0.2s ease-out forwards;
+    }
+
+    .hero-subtext {
+      animation: heroFadeIn 0.3s ease-out 0.05s forwards;
+      opacity: 0;
+    }
+
+    .hero-cta {
+      animation: heroFadeIn 0.3s ease-out 0.1s forwards;
+      opacity: 0;
+    }
+
+    .hero-logo-text {
+      animation: gradientShift 4s linear infinite;
+    }
+
+    @keyframes heroFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes gradientShift {
+      0%, 100% {
+        background-position: 0% center;
+      }
+      50% {
+        background-position: 100% center;
+      }
+    }
+
+    /* Disable animations on mobile for instant LCP */
+    @media (max-width: 767px) {
+      .hero-headline,
+      .hero-badge,
+      .hero-subtext,
+      .hero-cta {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    
+      .hero-logo-text {
+        animation: none;
+        background-position: 0% center;
+      }
+    }
   }
 
   /* Futuristic border glow */

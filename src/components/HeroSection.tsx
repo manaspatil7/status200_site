@@ -75,12 +75,9 @@ export default function HeroSection() {
         style={{ opacity, scale, y, filter: `blur(${blur}px)` }}
         className="relative z-10 max-w-7xl mx-auto px-6 py-20 text-center"
       >
-        {/* Status Badge */}
-        <motion.div
-          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.9 }}
-          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
-          transition={shouldReduceMotion ? { duration: 0.2 } : { duration: 0.6, delay: 0.2, type: "spring" }}
-          className="inline-flex items-center gap-3 glass-card px-5 py-2.5 rounded-full mb-8 border border-primary/20"
+        {/* Status Badge - Simple CSS animation */}
+        <div
+          className="hero-badge inline-flex items-center gap-3 glass-card px-5 py-2.5 rounded-full mb-8 border border-primary/20"
         >
           <Zap className="w-4 h-4 text-primary" />
           <span className="text-sm font-medium text-foreground/80 tracking-wide">Delivering Digital Excellence</span>
@@ -88,45 +85,34 @@ export default function HeroSection() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
           </span>
-        </motion.div>
+        </div>
 
-        {/* Main Headline */}
-        <motion.h1
-          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
-          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-          transition={shouldReduceMotion ? { duration: 0.2, delay: 0.1 } : { duration: 0.8, delay: 0.4 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight mb-6"
+        {/* Main Headline - LCP Element - NO Framer Motion on mobile */}
+        <h1
+          className="hero-headline text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight mb-6"
         >
-          <motion.span 
-            className="block bg-gradient-to-r from-primary via-cyan-300 to-white bg-[length:200%_auto] bg-clip-text text-transparent"
-            animate={shouldReduceMotion ? {} : { backgroundPosition: ['0%', '100%', '0%'] }}
-            transition={shouldReduceMotion ? {} : { duration: 3, repeat: Infinity, ease: "linear" }}
+          <span 
+            className="hero-logo-text block bg-gradient-to-r from-primary via-cyan-300 to-white bg-[length:200%_auto] bg-clip-text text-transparent"
           >
             status_200
-          </motion.span>
+          </span>
           <span className="block text-foreground text-3xl md:text-4xl lg:text-5xl mt-4 font-medium">
             {displayedText}
             <span className="animate-pulse">|</span>
           </span>
-        </motion.h1>
+        </h1>
 
-        {/* Subheadline */}
-        <motion.p
-          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-          transition={shouldReduceMotion ? { duration: 0.2, delay: 0.15 } : { duration: 0.8, delay: 0.6 }}
-          className="text-lg md:text-xl text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed font-book tracking-wide"
+        {/* Subheadline - Simple CSS animation */}
+        <p
+          className="hero-subtext text-lg md:text-xl text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed font-book tracking-wide"
         >
           We architect exceptional digital experiences - from stunning websites 
           to intelligent AI systems. Code that performs. Design that converts.
-        </motion.p>
+        </p>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-          transition={shouldReduceMotion ? { duration: 0.2, delay: 0.2 } : { duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        {/* CTA Buttons - Simple CSS animation */}
+        <div
+          className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <a
             href="#contact"
@@ -170,7 +156,7 @@ export default function HeroSection() {
               </div>
             </div>
           </a>
-        </motion.div>
+        </div>
 
         {/* Scroll Indicator */}
         <motion.div
