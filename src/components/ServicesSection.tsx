@@ -79,13 +79,13 @@ function DesktopServicesSection() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start start', 'end start'],
+    offset: ['start 30%', 'end start'],
   })
 
-  // Smoother animation - starts immediately when section is reached
+  // Smoother animation - starts earlier when section enters viewport
   const x = useTransform(
     scrollYProgress,
-    [0, 0.85],
+    [-0.15, 0.75],
     ['calc(50vw - 210px)', '-220%']
   )
 
@@ -122,17 +122,6 @@ function DesktopServicesSection() {
               <ServiceCard key={service.number} service={service} isDesktop />
             ))}
           </motion.div>
-
-          {/* Scroll Progress Indicator */}
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-
-            <div className="w-32 h-1 bg-gray-800 rounded-full overflow-hidden">
-              <motion.div
-                style={{ scaleX: scrollYProgress }}
-                className="h-full bg-gradient-to-r from-cyan-400 to-violet-500 origin-left"
-              />
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -242,7 +231,7 @@ function ServiceCard({ service, isDesktop }: { service: any; isDesktop: boolean 
       <div className="relative rounded-2xl overflow-hidden p-[1px] bg-gradient-to-r from-cyan-400/0 via-violet-500/0 to-pink-500/0 group-hover:from-cyan-400 group-hover:via-violet-500 group-hover:to-pink-500 transition-all duration-500">
         <div className={`relative rounded-2xl bg-black/90 backdrop-blur-xl border border-gray-800 flex flex-col ${isDesktop
           ? 'p-8 min-h-[500px]'
-          : 'p-5 sm:p-6 md:p-8 min-h-[400px] sm:min-h-[450px]'
+          : 'p-5 sm:p-6'
           }`}>
 
           {/* Number */}
@@ -287,10 +276,7 @@ function ServiceCard({ service, isDesktop }: { service: any; isDesktop: boolean 
           </p>
 
           {/* Description */}
-          <p className={`text-muted-foreground leading-relaxed flex-1 ${isDesktop
-            ? 'text-sm mb-6'
-            : 'text-sm mb-6'
-            }`}>
+          <p className={`text-muted-foreground leading-relaxed flex-1`}>
             {service.description}
           </p>
 
