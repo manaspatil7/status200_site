@@ -63,11 +63,8 @@ export default function Navbar() {
 						<img
 							src="/logo.png"
 							alt="Status200 Logo"
-							width="384"
-							height="100"
 							loading="eager"
 							decoding="async"
-							fetchpriority="high"
 							className="w-48 sm:w-56 md:w-64 lg:w-80 xl:w-96 h-auto"
 						/>
 					</Link>

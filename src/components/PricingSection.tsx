@@ -70,7 +70,7 @@ const plans = [
 
 export default function PricingSection() {
   return (
-    <section id="pricing" className="relative py-32">
+    <section id="pricing" className="relative py-6 md:py-32">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <AnimatedSection className="text-center mb-20">
@@ -178,7 +178,7 @@ export default function PricingSection() {
         </div>
 
         {/* Additional Information and CTA */}
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-end">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-4 md:gap-8 items-end">
           {/* Payment Terms */}
           <div className="space-y-4">
             <div className="flex items-start gap-3">
@@ -192,8 +192,8 @@ export default function PricingSection() {
           </div>
 
           {/* Call to Action */}
-          <div className="text-right">
-            <p className="text-muted-foreground mb-4">Ready to get started?</p>
+          <div className="text-center md:text-right">
+            <p className="text-muted-foreground mb-2 md:mb-4">Ready to get started?</p>
             <a
               href="#contact"
               onClick={(e) => {
@@ -206,10 +206,10 @@ export default function PricingSection() {
                   window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                 }
               }}
-              className="btn-glow group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold text-primary-foreground"
+              className="btn-glow group inline-flex items-center justify-center gap-2 px-4 py-3 md:px-8 md:py-4 rounded-xl text-sm md:text-lg font-semibold text-primary-foreground w-full md:w-auto"
             >
-              Contact us today for a custom quote
-              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+              <span className="text-center">Contact us today for a custom quote</span>
+              <ArrowRight className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-1 flex-shrink-0" />
             </a>
           </div>
         </div>

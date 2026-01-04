@@ -1,5 +1,5 @@
 
-import { useRef, useState, useEffect, memo } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   TrendingUp,
@@ -11,7 +11,6 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import ParticleBackground from './ParticleBackground'
-import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 const services = [
   {
@@ -97,16 +96,16 @@ function DesktopServicesSection() {
       id="services"
       className="relative h-[110vh]"
     >
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+      <div className="sticky top-0 h-screen flex items-center overflow-x-clip overflow-y-visible">
         <ParticleBackground />
 
-        <div className="relative z-10 w-full">
+        <div className="relative w-full py-20" >
           {/* Header */}
           <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-12 text-center">
             <span className="text-primary text-sm uppercase tracking-widest font-semibold">
               Strategic Offerings
             </span>
-            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mt-4">
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mt-4 pt-[-10px]">
               Our <span className="text-gradient-primary">Services</span>
             </h2>
             <p className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
@@ -158,7 +157,7 @@ function MobileServicesSection() {
   return (
     <section
       id="services"
-      className="relative overflow-hidden py-16 sm:py-24"
+      className="relative overflow-hidden py-16 sm:py-40"
     >
       <ParticleBackground />
 
@@ -232,8 +231,8 @@ function ServiceCard({ service, isDesktop }: { service: any; isDesktop: boolean 
       }`}>
       <div className="relative rounded-2xl overflow-hidden p-[1px] bg-gradient-to-r from-cyan-400/0 via-violet-500/0 to-pink-500/0 group-hover:from-cyan-400 group-hover:via-violet-500 group-hover:to-pink-500 transition-all duration-500">
         <div className={`relative rounded-2xl bg-black/90 backdrop-blur-xl border border-gray-800 flex flex-col ${isDesktop
-          ? 'p-8 h-[600px]'
-          : 'p-5 h-[500px] sm:p-6'
+          ? 'p-8 h-[500px] py-16'
+          : 'p-5 h-[400px] sm:p-6'
           }`}>
 
           {/* Number */}
@@ -284,7 +283,7 @@ function ServiceCard({ service, isDesktop }: { service: any; isDesktop: boolean 
 
           {/* Tags */}
           {service.tags && (
-            <div className="flex flex-wrap gap-2 pt-5">
+            <div className="flex flex-wrap gap-2 pt-5 pb-50">
               {service.tags.map((tag: string) => (
                 <span
                   key={tag}

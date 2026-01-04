@@ -49,10 +49,15 @@ export default function HeroSection() {
   const blur = isDesktop ? useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 10]) : useTransform(scrollYProgress, [0, 1], [0, 0]);
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-transparent"
+    >
       {isDesktop && (
         <Suspense fallback={null}>
-          <ParticleBackground />
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <ParticleBackground />
+          </div>
         </Suspense>
       )}
       
@@ -76,7 +81,10 @@ export default function HeroSection() {
         className="relative z-10 max-w-7xl mx-auto px-6 py-20 text-center"
       >
         {/* Status Badge - Simple CSS animation */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2, type: "spring" }}
           className="hero-badge inline-flex items-center gap-3 glass-card px-5 py-2.5 rounded-full mb-8 border border-primary/20"
         >
           <Zap className="w-4 h-4 text-primary" />
@@ -85,10 +93,13 @@ export default function HeroSection() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
           </span>
-        </div>
+        </motion.div>
 
-        {/* Main Headline - LCP Element - NO Framer Motion on mobile */}
-        <h1
+        {/* Main Headline - LCP Element */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
           className="hero-headline text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight mb-6"
         >
           <span 
@@ -100,18 +111,24 @@ export default function HeroSection() {
             {displayedText}
             <span className="animate-pulse">|</span>
           </span>
-        </h1>
+        </motion.h1>
 
-        {/* Subheadline - Simple CSS animation */}
-        <p
+        {/* Subheadline */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
           className="hero-subtext text-lg md:text-xl text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed font-book tracking-wide"
         >
           We architect exceptional digital experiences - from stunning websites 
           to intelligent AI systems. Code that performs. Design that converts.
-        </p>
+        </motion.p>
 
-        {/* CTA Buttons - Simple CSS animation */}
-        <div
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
           className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <a
@@ -156,7 +173,7 @@ export default function HeroSection() {
               </div>
             </div>
           </a>
-        </div>
+        </motion.div>
 
         {/* Scroll Indicator */}
         <motion.div
