@@ -21,7 +21,7 @@ const socialLinks = [
   { icon: Instagram, href: 'https://www.instagram.com/status_200.dev/', label: 'Instagram' },
   { icon: Linkedin, href: 'https://www.linkedin.com/company/110673530', label: 'LinkedIn' },
   { icon: FaWhatsapp, href: 'https://wa.me/919757365171', label: 'WhatsApp' },
-  { icon: Github, href: '#', label: 'GitHub' },
+  // { icon: Github, href: '#', label: 'GitHub' },
   { icon: Mail, href: 'mailto:status200.devs@gmail.com', label: 'Email' },
 ];
 
